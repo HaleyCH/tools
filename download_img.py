@@ -1,7 +1,9 @@
 import requests
-import sys
+import threading
 from safe_open import open_s
 from my_fake_useragent import UserAgent as UA
+from time import sleep
+import random
 
 
 def download_img(url, fp, name, headers=None):
@@ -22,6 +24,23 @@ def download_img(url, fp, name, headers=None):
         print("[!]Image ", name, " failed.")
         print("[+]Resp status:", resp.status_code)
         return -1
+
+
+def download_img_t(urls, fp, headers=None, t=1):
+    while (len(urls) >= t):
+        for i in range(t):
+            url = urls.pop()
+            name = url.split("/")[-1]
+            k = threading.Thread(target=download_img, args=(url, fp, name,), kwargs={"headers": headers})
+            k.start()
+            sleep(random.random())
+            k.join(10)
+    for url in urls:
+        name = url.split("/")[-1]
+        k = threading.Thread(target=download_img, args=(url, fp, name,), kwargs={"headers": headers})
+        k.start()
+        sleep(random.random())
+        k.join(10)
 
 
 if __name__ == "__main__":
