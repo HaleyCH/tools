@@ -21,20 +21,21 @@ def download_img(url, fp, name, headers=None):
         print("[#]Image ", name, " was successfully downloaded.")
         return 0
     except:
-        print("[!]Image ", name, " failed.")
-        print("[+]Resp status:", resp.status_code)
+        print("[!]Writing image ", name, " failed.")
+        # print("[+]Resp status:", resp.status_code)
         return -1
 
 
 def download_img_t(urls, fp, headers=None, t=1):
-    while (len(urls) >= t):
+    while len(urls) >= t:
+        k = None
         for i in range(t):
             url = urls.pop()
             name = url.split("/")[-1]
             k = threading.Thread(target=download_img, args=(url, fp, name,), kwargs={"headers": headers})
             k.start()
             sleep(random.random())
-            k.join(10)
+        k.join(10)
     for url in urls:
         name = url.split("/")[-1]
         k = threading.Thread(target=download_img, args=(url, fp, name,), kwargs={"headers": headers})
@@ -44,6 +45,8 @@ def download_img_t(urls, fp, headers=None, t=1):
 
 
 if __name__ == "__main__":
-    url = r"https://img-blog.csdn.net/20140613201350500?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQveWl0b3VoYW4=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast"
+    with open_s("D:\\nsfw_url_data\\sexy\\urls_sexy.txt") as r_obj:
+        urls = r_obj.read().split("\n")[20:]
+        # urls.reverse()
 
-    download_img(url, "D:/test/", "1.jpg")
+    download_img_t(urls, "D:/nsfw/sexy/", t=5)
