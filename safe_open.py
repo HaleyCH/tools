@@ -1,6 +1,7 @@
 from os.path import exists
 from os import makedirs
 import os.path
+from shutil import copyfile
 
 
 def open_s(fp, mode='r', encoding=None):
@@ -30,8 +31,8 @@ def get_all_files(fp):
 
 def copy_file(fp, fdir):
     fn = os.path.basename(fp)
-    print("[#]Copy file ", fp, " to ", fdir)
-    os.popen("copy " + fp + " " + fdir + fn)
+    print("[#]Copy file ", fp, " to ", fdir + fn)
+    copyfile(fp, fdir + fn)
     return 0
 
 
