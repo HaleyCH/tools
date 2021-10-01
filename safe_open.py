@@ -17,15 +17,18 @@ def open_s(fp, mode='r', encoding=None):
 
 
 def get_all_files(fp):
+    return [fp + fn for fn in get_all_files_name(fp)]
+
+
+def get_all_files_name(fp):
     ff = []
     for root, dirs, files in os.walk(fp):
-
         # root 表示当前正在访问的文件夹路径
         # dirs 表示该文件夹下的子目录名list
         # files 表示该文件夹下的文件list
         # 遍历文件
         for f in files:
-            ff.append(os.path.join(root, f))
+            ff.append(f)
     return ff
 
 
@@ -43,6 +46,4 @@ def copy_files(fps, fdir):
 
 
 if __name__ == "__main__":
-    a = open_s("D:/notMNIST_large/qq/aaa/s/a2FkZW4udHRm.png", mode="wb")
-    print(a)
-    a.close()
+    print(get_all_files("D:\\nsfw\\sexy"))
