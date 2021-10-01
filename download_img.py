@@ -1,6 +1,6 @@
 import requests
 import threading
-from safe_open import open_s
+from safe_open import open_s, get_all_files_name
 from my_fake_useragent import UserAgent as UA
 from time import sleep
 import random
@@ -27,11 +27,16 @@ def download_img(url, fp, name, headers=None):
 
 
 def download_img_t(urls, fp, headers=None, t=1):
+    finished_imgs = get_all_files_name(fp)
     while len(urls) >= t:
         k = None
         for i in range(t):
             url = urls.pop()
-            name = url.split("/")[-1]
+            name = url.split("/")[-1].replace("\\", "").replace("/", "")
+            while urls and name in finished_imgs:
+                print("[!]Image ", name, " has been already downloaded,pass.")
+                url = urls.pop()
+                name = url.split("/")[-1].replace("\\", "").replace("/", "")
             k = threading.Thread(target=download_img, args=(url, fp, name,), kwargs={"headers": headers})
             k.start()
             sleep(random.random())
@@ -45,7 +50,7 @@ def download_img_t(urls, fp, headers=None, t=1):
 
 
 if __name__ == "__main__":
-    with open_s("D:\\nsfw_url_data\\sexy\\urls_sexy.txt") as r_obj:
+    with open_s("D:\\nsfw_data_scraper\\raw_data\\sexy\\urls_sexy.txt") as r_obj:
         urls = r_obj.read().split("\n")[20:]
         # urls.reverse()
 
