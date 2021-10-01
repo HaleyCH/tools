@@ -52,13 +52,19 @@ def download_img_t(urls, fp, headers=None, t=1):
 
 
 if __name__ == "__main__":
-    fp, out = sys.argv[0], sys.argv[1]
-    if len(sys.argv) < 3:
-        t = 5
-    else:
-        t = sys.argv[2]
+    # fp, out = sys.argv[1], sys.argv[2]
+    # print(fp,out)
+    # if len(sys.argv) < 4:
+    #     t = 5
+    # else:
+    #     t = sys.argv[3]
+    fp = "D:/nsfw_data_scraper/raw_data/hentai/urls_hentai.txt"
+    out = "D:/nsfw/hentai/"
+    t = 5
+
     with open_s(fp) as r_obj:
         urls = r_obj.read().split("\n")[20:]
         # urls.reverse()
 
-    download_img_t(urls, out, t)
+    download_img_t(urls, out, t=t)
+
