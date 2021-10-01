@@ -1,3 +1,5 @@
+import sys
+
 import requests
 import threading
 from safe_open import open_s, get_all_files_name
@@ -50,8 +52,13 @@ def download_img_t(urls, fp, headers=None, t=1):
 
 
 if __name__ == "__main__":
-    with open_s("D:\\nsfw_data_scraper\\raw_data\\sexy\\urls_sexy.txt") as r_obj:
+    fp, out = sys.argv[0], sys.argv[1]
+    if len(sys.argv) < 3:
+        t = 5
+    else:
+        t = sys.argv[2]
+    with open_s(fp) as r_obj:
         urls = r_obj.read().split("\n")[20:]
         # urls.reverse()
 
-    download_img_t(urls, "D:/nsfw/sexy/", t=5)
+    download_img_t(urls, out, t)
