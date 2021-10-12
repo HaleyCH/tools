@@ -5,12 +5,13 @@ from shutil import copyfile
 
 
 def open_s(fp, mode='r', encoding=None):
-    if exists(fp):
+    f_dir = os.path.dirname(fp)
+    if exists(f_dir):
         print("[#]Open file ", fp)
         return open(fp, mode=mode, encoding=encoding)
 
-    print("[#]Making path ", fp)
-    makedirs(fp)
+    print("[#]Making path ", f_dir)
+    makedirs(f_dir)
     print("[#]Open file ", fp)
     return open(fp, mode=mode, encoding=encoding)
 
